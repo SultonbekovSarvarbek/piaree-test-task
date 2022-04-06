@@ -59,6 +59,7 @@ export default {
   layout: "empty",
   data() {
     return {
+      loading: false,
       form: {
         login: "",
         password: "",

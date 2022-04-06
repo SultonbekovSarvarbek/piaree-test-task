@@ -1,11 +1,22 @@
 <template>
   <div class="auth-wrapper">
+    <transition name="fade">
+      <loader v-if="loading" />
+    </transition>
     <slot />
   </div>
 </template>
 
 <script>
-export default {};
+import { mapState } from "vuex";
+import Loader from "../components/loader.vue";
+export default {
+  components: { Loader },
+  name: "AuthLayout",
+  computed: {
+    ...mapState("loader", ["loading"]),
+  },
+};
 </script>
 
 <style lang="scss" scoped>

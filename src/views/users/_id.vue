@@ -107,7 +107,7 @@ export default {
     async updateUserHandle() {
       this.$v.$touch();
       if (!this.$v.$invalid) {
-        if (this.form.password) {
+        if (this.form.password && this.form.password.length === 0) {
           delete this.form["password"];
         }
         try {

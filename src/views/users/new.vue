@@ -2,36 +2,61 @@
   <div class="create-new-user">
     <h1>Create new user</h1>
     <form @submit.prevent="createNewUserHandle" class="form-group">
-      <div class="form-item">
+      <div
+        class="form-item"
+        :class="{ 'form-item--error': $v.form.login.$error }"
+      >
         <label for="login" class="form-label">Login</label>
         <input
           type="text"
           id="login"
           class="form-input"
-          v-model="form.login"
+          v-model.trim="$v.form.login.$model"
           placeholder="login"
         />
+        <div
+          class="error"
+          v-if="!$v.form.login.required && $v.form.login.$dirty"
+        >
+          Field is required
+        </div>
       </div>
-      <div class="form-item">
+      <div
+        class="form-item"
+        :class="{ 'form-item--error': $v.form.password.$error }"
+      >
         <label for="password" class="form-label">Password</label>
         <input
           type="password"
           for="password"
           class="form-input"
-          v-model="form.password"
+          v-model.trim="$v.form.password.$model"
           placeholder="password"
         />
+        <div
+          class="error"
+          v-if="!$v.form.password.required && $v.form.password.$dirty"
+        >
+          Field is required
+        </div>
       </div>
 
-      <div class="form-item">
+      <div
+        class="form-item"
+        :class="{ 'form-item--error': $v.form.name.$error }"
+      >
         <label for="name" class="form-label">Name</label>
         <input
           type="text"
           id="name"
           class="form-input"
           v-model="form.name"
+          v-model.trim="$v.form.name.$model"
           placeholder="name"
         />
+        <div class="error" v-if="!$v.form.name.required && $v.form.name.$dirty">
+          Field is required
+        </div>
       </div>
 
       <div class="form-item">
@@ -54,6 +79,7 @@
 </template>
 
 <script>
+import { required } from "vuelidate/lib/validators";
 import { mapActions } from "vuex";
 export default {
   name: "NewUserPage",
@@ -70,14 +96,30 @@ export default {
   methods: {
     ...mapActions("user", ["createUser"]),
     async createNewUserHandle() {
-      try {
-        await this.createUser(this.form);
-        alert("User was successfully created");
-        this.$router.push("/users");
-      } catch (error) {
-        alert(error);
-        return error;
+      this.$v.$touch();
+      if (!this.$v.$invalid) {
+        try {
+          await this.createUser(this.form);
+          alert("User was successfully created");
+          this.$router.push("/users");
+        } catch (error) {
+          alert(error);
+          return error;
+        }
       }
+    },
+  },
+  validations: {
+    form: {
+      login: {
+        required,
+      },
+      password: {
+        required,
+      },
+      name: {
+        required,
+      },
     },
   },
 };

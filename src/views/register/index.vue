@@ -101,12 +101,17 @@ export default {
     async registerHandle() {
       this.$v.$touch();
       if (!this.$v.$invalid) {
-        await this.createUser(this.form).then(() => {
-          alert(
-            "Thank you for your registration. You have successfully registered"
-          );
-          this.$router.push("/login");
-        });
+        try {
+          await this.createUser(this.form).then(() => {
+            alert(
+              "Thank you for your registration. You have successfully registered"
+            );
+            this.$router.push("/login");
+          });
+        } catch (error) {
+          alert(error);
+          return error;
+        }
       }
     },
   },

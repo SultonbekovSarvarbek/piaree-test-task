@@ -34,6 +34,7 @@ api.interceptors.response.use(
   },
   (error) => {
     let response = error.response;
+    console.log(response.data.error);
     if (response.config.showLoader) {
       store.dispatch("loader/done");
     }

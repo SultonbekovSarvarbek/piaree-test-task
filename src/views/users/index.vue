@@ -9,9 +9,13 @@
     <div class="users-wrapper">
       <div class="user-card" v-for="user in allUsers" :key="user.id">
         <p>Name: {{ user.name }}</p>
-        <p>Comment: {{ user.comment }}</p>
+        <p v-if="user.comment">Comment: {{ user.comment }}</p>
         <div class="user-card__bottom">
-          <button class="btn btn-danger" @click="removeUserHandle(user)">
+          <button
+            class="btn btn-danger"
+            v-if="user.id !== userInfo.id"
+            @click="removeUserHandle(user)"
+          >
             Delete
           </button>
           <button class="btn btn-info" @click="editUserHandle(user.id)">
@@ -32,6 +36,7 @@ export default {
   },
   computed: {
     ...mapState("users", ["allUsers"]),
+    ...mapState("user", ["userInfo"]),
   },
   methods: {
     ...mapActions("users", ["fetchUsers", "removeUser"]),

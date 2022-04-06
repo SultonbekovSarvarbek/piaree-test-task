@@ -2,15 +2,21 @@
   <div class="create-new-station">
     <h1>Create new station</h1>
     <form @submit.prevent="createNewStationHandle" class="form-group">
-      <div class="form-item">
+      <div
+        class="form-item"
+        :class="{ 'form-item--error': $v.form.name.$error }"
+      >
         <label for="name" class="form-label">Name</label>
         <input
           type="text"
           id="name"
           class="form-input"
-          v-model="form.name"
+          v-model.trim="$v.form.name.$model"
           placeholder="name"
         />
+        <div class="error" v-if="!$v.form.name.required && $v.form.name.$dirty">
+          Field is required
+        </div>
       </div>
 
       <div class="form-item">
@@ -33,6 +39,7 @@
 </template>
 
 <script>
+import { required } from "vuelidate/lib/validators";
 import { mapActions } from "vuex";
 export default {
   name: "NewStationPage",
@@ -47,14 +54,25 @@ export default {
   methods: {
     ...mapActions("stations", ["createStation"]),
     async createNewStationHandle() {
-      try {
-        await this.createStation(this.form);
-        alert("Station was successfully created");
-        this.$router.push("/stations");
-      } catch (error) {
-        alert("Error");
-        return error;
+      this.$v.$touch();
+      if (!this.$v.$invalid) {
+        try {
+          await this.createStation(this.form);
+          alert("Station was successfully created");
+          this.$router.push("/stations");
+        } catch (error) {
+          alert(error);
+          this.form.name = "";
+          return error;
+        }
       }
+    },
+  },
+  validations: {
+    form: {
+      name: {
+        required,
+      },
     },
   },
 };

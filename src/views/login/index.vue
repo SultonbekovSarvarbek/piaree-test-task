@@ -76,7 +76,7 @@ export default {
             this.$router.push("/");
           });
         } catch (error) {
-          alert("Error! Check your login or password!");
+          alert(error);
           return error;
         }
       }

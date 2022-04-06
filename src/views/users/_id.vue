@@ -10,9 +10,15 @@
             type="text"
             id="name"
             class="form-input"
-            v-model="form.name"
+            v-model.trim="$v.form.name.$model"
             placeholder="name"
           />
+          <div
+            class="error"
+            v-if="!$v.form.name.required && $v.form.name.$dirty"
+          >
+            Field is required
+          </div>
         </div>
         <div class="form-item">
           <label for="login" class="form-label">Login</label>
@@ -20,8 +26,24 @@
             type="text"
             id="login"
             class="form-input"
-            v-model="form.login"
+            v-model.trim="$v.form.login.$model"
             placeholder="login"
+          />
+          <div
+            class="error"
+            v-if="!$v.form.login.required && $v.form.login.$dirty"
+          >
+            Field is required
+          </div>
+        </div>
+        <div class="form-item">
+          <label for="password" class="form-label">Password</label>
+          <input
+            type="password"
+            id="password"
+            class="form-input"
+            v-model="form.password"
+            placeholder="password"
           />
         </div>
         <div class="form-item">
@@ -36,6 +58,12 @@
         </div>
         <div class="edit-user__bottom">
           <button class="btn btn-info" type="submit">Save</button>
+          <button
+            class="btn btn-primary--dark-outlined"
+            @click="$router.push('/users')"
+          >
+            Go back
+          </button>
         </div>
       </form>
     </div>
@@ -44,6 +72,7 @@
 
 <script>
 import { mapActions } from "vuex";
+import { required } from "vuelidate/lib/validators";
 export default {
   name: "UserPage",
   data() {
@@ -55,6 +84,7 @@ export default {
         login: "",
         name: "",
         comment: "",
+        password: "",
       },
     };
   },
@@ -75,8 +105,29 @@ export default {
       }
     },
     async updateUserHandle() {
-      await this.updateUser(this.form);
-      this.$router.push("/users");
+      this.$v.$touch();
+      if (!this.$v.$invalid) {
+        if (this.form.password) {
+          delete this.form["password"];
+        }
+        try {
+          await this.updateUser(this.form);
+          this.$router.push("/users");
+        } catch (error) {
+          alert(error);
+          return error;
+        }
+      }
+    },
+  },
+  validations: {
+    form: {
+      login: {
+        required,
+      },
+      name: {
+        required,
+      },
     },
   },
 };
@@ -91,6 +142,9 @@ export default {
   }
   &__bottom {
     margin-top: 1rem;
+    .btn-primary--dark-outlined {
+      margin-top: 1rem;
+    }
   }
 }
 </style>

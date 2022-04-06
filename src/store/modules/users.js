@@ -28,7 +28,7 @@ const actions = {
     try {
       await this.$api.patch(`/users/${userForm.id}`, userForm);
     } catch (error) {
-      return error;
+      throw new Error(error.response.data.error);
     }
   },
 };

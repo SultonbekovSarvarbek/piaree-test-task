@@ -4,15 +4,24 @@
     <div v-if="loading">Loading</div>
     <div v-else>
       <form class="edit-station__form" @submit.prevent="updateStationHandle">
-        <div class="form-item">
+        <div
+          class="form-item"
+          :class="{ 'form-item--error': $v.form.name.$error }"
+        >
           <label for="name" class="form-label">Name</label>
           <input
             type="text"
             id="name"
             class="form-input"
-            v-model="form.name"
+            v-model.trim="$v.form.name.$model"
             placeholder="name"
           />
+          <div
+            class="error"
+            v-if="!$v.form.name.required && $v.form.name.$dirty"
+          >
+            Field is required
+          </div>
         </div>
         <div class="form-item">
           <label for="comment" class="form-label">Comment</label>
@@ -26,6 +35,12 @@
         </div>
         <div class="edit-station__bottom">
           <button class="btn btn-info" type="submit">Save</button>
+          <button
+            class="btn btn-primary--dark-outlined"
+            @click="$router.push('/stations')"
+          >
+            Go back
+          </button>
         </div>
       </form>
     </div>
@@ -33,6 +48,7 @@
 </template>
 
 <script>
+import { required } from "vuelidate/lib/validators";
 import { mapActions } from "vuex";
 export default {
   name: "UserPage",
@@ -64,8 +80,24 @@ export default {
       }
     },
     async updateStationHandle() {
-      await this.updateStation(this.form);
-      this.$router.push("/stations");
+      this.$v.$touch();
+      if (!this.$v.$invalid) {
+        try {
+          await this.updateStation(this.form).then(() => {
+            this.$router.push("/stations");
+          });
+        } catch (error) {
+          alert(error);
+          return error;
+        }
+      }
+    },
+  },
+  validations: {
+    form: {
+      name: {
+        required,
+      },
     },
   },
 };
@@ -80,6 +112,9 @@ export default {
   }
   &__bottom {
     margin-top: 1rem;
+    .btn-primary--dark-outlined {
+      margin-top: 1rem;
+    }
   }
 }
 </style>

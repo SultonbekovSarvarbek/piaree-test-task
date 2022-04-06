@@ -28,7 +28,7 @@ const actions = {
     try {
       await this.$api.patch(`/stations/${stationForm.id}`, stationForm);
     } catch (error) {
-      return error;
+      throw new Error(error.response.data.error);
     }
   },
   // eslint-disable-next-line no-unused-vars
@@ -36,7 +36,7 @@ const actions = {
     try {
       await this.$api.post("/stations", newStationForm);
     } catch (error) {
-      return error;
+      throw new Error(error.response.data.error);
     }
   },
 };

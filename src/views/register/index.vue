@@ -62,24 +62,15 @@
         </div>
       </div>
 
-      <div
-        class="form-item"
-        :class="{ 'form-item--error': $v.form.comment.$error }"
-      >
+      <div class="form-item">
         <label for="comment" class="form-label">Comment</label>
         <textarea
           type="text"
           id="comment"
           class="form-textarea"
-          v-model.trim="$v.form.comment.$model"
+          v-model="form.comment"
           placeholder="comment"
         />
-        <div
-          class="error"
-          v-if="!$v.form.comment.required && $v.form.comment.$dirty"
-        >
-          Field is required
-        </div>
       </div>
 
       <button class="btn btn-primary" type="submit">Register</button>
@@ -128,9 +119,6 @@ export default {
         required,
       },
       name: {
-        required,
-      },
-      comment: {
         required,
       },
     },

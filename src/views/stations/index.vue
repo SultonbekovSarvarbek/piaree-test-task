@@ -12,7 +12,7 @@
         :key="station.id"
       >
         <p>Name: {{ station.name }}</p>
-        <p>Comment: {{ station.comment }}</p>
+        <p v-if="station.comment">Comment: {{ station.comment }}</p>
         <div class="station-card__bottom">
           <button class="btn btn-danger" @click="removeStationHandle(station)">
             Delete

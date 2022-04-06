@@ -1,16 +1,16 @@
 <template>
-  <div id="app" class="default-layout">
-    <app-header />
-    <div class="page-content">
+  <div id="app">
+    <component :is="layout">
       <router-view />
-    </div>
+    </component>
   </div>
 </template>
 <script>
-import AppHeader from "@/components/AppHeader.vue";
 export default {
-  components: {
-    AppHeader,
+  computed: {
+    layout() {
+      return this.$route.meta.layout || "default-layout";
+    },
   },
 };
 </script>
@@ -23,7 +23,7 @@ export default {
   text-align: center;
   color: #2c3e50;
 }
-/* #nav a.router-link-exact-active {
-  color: #42b983;
-} */
+a.router-link-exact-active {
+  color: #333;
+}
 </style>

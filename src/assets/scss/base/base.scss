@@ -11,9 +11,8 @@ body, h1, h2, h3, h4, h5, h6, p, ol, ul {
     font-weight: normal;
 }
 body{
-    font-family: 'Manrope', sans-serif;
+    font-family: 'Montserrat', sans-serif;
     font-weight: normal;
-    color:$text-dark;
 }
 .container{
     max-width: 1200px;
@@ -28,9 +27,7 @@ img {
     height: auto;
 }
 .default-layout{
-    display: flex;
-    flex-direction: column;
-    min-height: 100vh;
+    padding-bottom: 1rem;
 }
 .page-content{
     flex-grow: 1;
@@ -40,4 +37,10 @@ button{
 }
 picture{
     display: block;
+}
+.error{
+    color:red;
+    text-align: left;
+    margin-top: 0.2rem;
+    font-size: 0.8em;
 }

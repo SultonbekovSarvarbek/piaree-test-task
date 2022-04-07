@@ -1,9 +1,6 @@
 <template>
   <div class="loader-wrapper">
-    <div class="lds-ripple">
-      <div></div>
-      <div></div>
-    </div>
+    <div class="loader">Loading...</div>
   </div>
 </template>
 
@@ -24,34 +21,45 @@ export default {
   width: 100%;
   height: 100%;
 }
-.lds-ripple {
-  display: inline-block;
-  position: relative;
-}
-.lds-ripple div {
-  position: absolute;
-  border: 4px solid #fff;
-  opacity: 1;
+.loader,
+.loader:after {
   border-radius: 50%;
-  animation: lds-ripple 1s cubic-bezier(0, 0.2, 0.8, 1) infinite;
+  width: 8em;
+  height: 8em;
 }
-.lds-ripple div:nth-child(2) {
-  animation-delay: -0.5s;
+.loader {
+  margin: 60px auto;
+  font-size: 10px;
+  position: relative;
+  text-indent: -9999em;
+  border-top: 1em solid rgba(255, 255, 255, 0.2);
+  border-right: 1em solid rgba(255, 255, 255, 0.2);
+  border-bottom: 1em solid rgba(255, 255, 255, 0.2);
+  border-left: 1em solid #ffffff;
+  -webkit-transform: translateZ(0);
+  -ms-transform: translateZ(0);
+  transform: translateZ(0);
+  -webkit-animation: load8 1.1s infinite linear;
+  animation: load8 1.1s infinite linear;
 }
-@keyframes lds-ripple {
+@-webkit-keyframes load8 {
   0% {
-    top: 36px;
-    left: 36px;
-    width: 0;
-    height: 0;
-    opacity: 1;
+    -webkit-transform: rotate(0deg);
+    transform: rotate(0deg);
   }
   100% {
-    top: 0px;
-    left: 0px;
-    width: 72px;
-    height: 72px;
-    opacity: 0;
+    -webkit-transform: rotate(360deg);
+    transform: rotate(360deg);
+  }
+}
+@keyframes load8 {
+  0% {
+    -webkit-transform: rotate(0deg);
+    transform: rotate(0deg);
+  }
+  100% {
+    -webkit-transform: rotate(360deg);
+    transform: rotate(360deg);
   }
 }
 </style>
